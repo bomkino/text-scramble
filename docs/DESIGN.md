@@ -11,8 +11,8 @@ Create presentation-safe draft copy that hides original wording without damaging
 3. Generate many pronounceable invented candidates from restrained vowel, consonant, and consonant-cluster rules.
 4. Score candidates against a font-agnostic glyph-width model. Pick closest visual shape, with extra weight on total word width.
 5. Reject common English words, source matches, harsh letter runs, repetitive bigrams, and unwelcome fragments.
-6. Reuse one invented base word when source word repeats inside the same selection.
-7. Scramble every digit by default while preserving digit count and separators.
+6. Reuse one invented base word when a source word repeats inside the same selection.
+7. Scramble every decimal digit by default while preserving its writing system, digit count, and separators. Leave non-decimal numeric symbols untouched when shape-safe substitution is unavailable.
 
 ## Acceptance criteria
 

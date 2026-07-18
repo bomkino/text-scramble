@@ -18,7 +18,8 @@ For a one-keystroke workflow, assign the command a hotkey in **Raycast Settings 
 ## What it protects
 
 - Exact whitespace, punctuation, paragraphs, and manual line breaks
-- Exact letter and digit counts at every position
+- Exact letter and decimal-digit counts at every position
+- Original numeral writing system, including fullwidth, Arabic-Indic, and Devanagari digits
 - Exact uppercase and lowercase pattern
 - Similar estimated word and line measure
 - Consistent replacements for repeated words within one selection
@@ -28,11 +29,11 @@ Automatic wrapping remains an approximation. Font metrics, tracking, kerning, Op
 
 ## Preferences
 
-| Preference       | Default           | Options                                                |
-| ---------------- | ----------------- | ------------------------------------------------------ |
-| Preferred Source | Selected Text     | Selected Text or Clipboard, with the other as fallback |
-| Output Action    | Replace Selection | Replace Selection or Copy to Clipboard                 |
-| Scramble Numbers | On                | Replace each numeral or leave numerals untouched       |
+| Preference       | Default           | Options                                                    |
+| ---------------- | ----------------- | ---------------------------------------------------------- |
+| Preferred Source | Selected Text     | Selected Text or Clipboard, with the other as fallback     |
+| Output Action    | Replace Selection | Replace Selection or Copy to Clipboard                     |
+| Scramble Numbers | On                | Replace decimal digits in place or leave numbers untouched |
 
 ## Privacy
 

@@ -22,11 +22,18 @@ async function readSelection(): Promise<string> {
   }
 }
 
+async function readClipboard(): Promise<string> {
+  try {
+    return (await Clipboard.readText()) ?? "";
+  } catch {
+    return "";
+  }
+}
+
 async function readText(preferredSource: ExtensionPreferences["source"]): Promise<string> {
-  const [selected, clipboardRaw] = await Promise.all([readSelection(), Clipboard.readText()]);
-  const clipboard = clipboardRaw ?? "";
+  const [selected, clipboard] = await Promise.all([readSelection(), readClipboard()]);
   const sources = preferredSource === "clipboard" ? [clipboard, selected] : [selected, clipboard];
-  const content = sources.find((value) => value.length > 0);
+  const content = sources.find((value) => value.trim().length > 0);
 
   if (!content) throw new NoTextError();
   return content;
@@ -38,6 +45,11 @@ export default async function Command(): Promise<void> {
   try {
     const source = await readText(preferences.source);
     const scrambled = scrambleText(source, { scrambleNumbers: preferences.scrambleNumbers });
+
+    if (scrambled === source) {
+      await showHUD("Nothing to scramble");
+      return;
+    }
 
     if (preferences.action === "copy") {
       await Clipboard.copy(scrambled);

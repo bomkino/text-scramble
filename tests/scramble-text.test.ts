@@ -77,6 +77,32 @@ test("scrambles every numeral without changing numeric structure", () => {
   assert.ok(resultDigits.every((digit, index) => digit !== sourceDigits[index]));
 });
 
+test("preserves the writing system of Unicode decimal digits", () => {
+  const samples = [
+    { source: "2026", pattern: /^[0-9]+$/ },
+    { source: "２０２６", pattern: /^[０-９]+$/ },
+    { source: "٢٠٢٦", pattern: /^[٠-٩]+$/ },
+    { source: "۲۰۲۶", pattern: /^[۰-۹]+$/ },
+    { source: "२०२६", pattern: /^[०-९]+$/ },
+    { source: "২০২৬", pattern: /^[০-৯]+$/ },
+    { source: "𝟚𝟘𝟚𝟞", pattern: /^[𝟘-𝟡]+$/u },
+  ];
+
+  samples.forEach(({ source, pattern }, index) => {
+    const result = scrambleText(source, { random: seededRandom(index + 20) });
+    const sourceDigits = Array.from(source);
+
+    assert.match(result, pattern);
+    assert.ok(Array.from(result).every((digit, digitIndex) => digit !== sourceDigits[digitIndex]));
+  });
+});
+
+test("preserves non-decimal numeric symbols that cannot be safely shape-matched", () => {
+  const source = "Ⅷ · ½ · ²";
+
+  assert.equal(scrambleText(source, { random: seededRandom(30) }), source);
+});
+
 test("can preserve numerals when preference is disabled", () => {
   const result = scrambleText("Edition 2026", { random: seededRandom(5), scrambleNumbers: false });
 

@@ -73,7 +73,7 @@
       "name": "scrambleNumbers",
       "type": "checkbox",
       "title": "Privacy",
-      "description": "Replace every numeral while preserving its position and digit count.",
+      "description": "Replace every decimal digit while preserving its writing system, position, and count.",
       "label": "Scramble Numbers",
       "default": true,
       "required": false

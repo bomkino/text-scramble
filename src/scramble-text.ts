@@ -8,7 +8,7 @@ export interface ScrambleOptions {
 
 const TOKEN_PATTERN = /\p{L}+|\p{N}+/gu;
 const LETTER_PATTERN = /^\p{L}+$/u;
-const ASCII_DIGIT_PATTERN = /^[0-9]$/;
+const DECIMAL_DIGIT_PATTERN = /^\p{Nd}$/u;
 const VOWEL_PATTERN = /[aeiou]/;
 const TRIPLE_VOWEL_PATTERN = /[aeiou]{3}/;
 const TRIPLE_CONSONANT_PATTERN = /[^aeiou]{3}/;
@@ -432,9 +432,20 @@ function createBaseWord(source: string, random: RandomSource, requestedCandidate
 function scrambleDigits(source: string, random: RandomSource): string {
   return Array.from(source)
     .map((char) => {
-      const original = ASCII_DIGIT_PATTERN.test(char) ? Number(char) : Math.floor(random() * 10);
+      if (!DECIMAL_DIGIT_PATTERN.test(char)) return char;
+
+      const codePoint = char.codePointAt(0);
+      if (codePoint === undefined) return char;
+
+      let runStart = codePoint;
+      while (runStart > 0 && DECIMAL_DIGIT_PATTERN.test(String.fromCodePoint(runStart - 1))) {
+        runStart--;
+      }
+
+      const original = (codePoint - runStart) % 10;
+      const zero = codePoint - original;
       const offset = 1 + Math.floor(random() * 9);
-      return String((original + offset) % 10);
+      return String.fromCodePoint(zero + ((original + offset) % 10));
     })
     .join("");
 }
