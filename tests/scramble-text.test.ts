@@ -63,6 +63,14 @@ test("preserves casing patterns", () => {
   assert.equal(caseMask(result), caseMask(source));
 });
 
+test("treats Unicode titlecase letters as uppercase", () => {
+  const result = scrambleText("ǅuro ǈub", { random: seededRandom(33) });
+  const letters = Array.from(result).filter((char) => /\p{L}/u.test(char));
+
+  assert.match(letters[0], /^[A-Z]$/);
+  assert.match(letters[4], /^[A-Z]$/);
+});
+
 test("maps repeated words consistently within one selection", () => {
   const result = scrambleText("Shape shape SHAPE", { random: seededRandom(3) });
   const words = result.split(" ");

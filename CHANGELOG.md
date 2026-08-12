@@ -10,5 +10,7 @@
 - Added optional numeral preservation and clear no-op feedback.
 - Preserved existing clipboard contents after replacing selected text.
 - Protected unsupported rich clipboard items by stopping before an unsafe paste.
+- Protected clipboards with simultaneous file and HTML representations from lossy restoration.
+- Preserved Unicode titlecase letters as uppercase-shaped invented copy.
 - Kept composed and decomposed accented words consistent without cache-length mismatches.
 - Kept all processing private and on-device.
