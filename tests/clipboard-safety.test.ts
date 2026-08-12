@@ -1,6 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { canSafelyRestoreClipboard } from "../src/clipboard-safety";
+import { canSafelyRestoreClipboard, getRestorableClipboardContent } from "../src/clipboard-safety";
+
+test("returns the exact payload Raycast can restore", () => {
+  assert.equal(getRestorableClipboardContent({ text: "reference" }), "reference");
+  assert.equal(getRestorableClipboardContent({ text: "" }), "");
+  assert.deepEqual(getRestorableClipboardContent({ text: "reference", html: "<p>reference</p>" }), {
+    html: "<p>reference</p>",
+    text: "reference",
+  });
+});
 
 test("accepts clipboard content Raycast can restore", () => {
   assert.equal(canSafelyRestoreClipboard({ text: "reference" }), true);
@@ -9,6 +18,8 @@ test("accepts clipboard content Raycast can restore", () => {
 });
 
 test("rejects unsupported clipboard representations", () => {
+  assert.equal(getRestorableClipboardContent({}), null);
+  assert.equal(getRestorableClipboardContent({ text: "reference", file: "/tmp/reference.png" }), null);
   assert.equal(canSafelyRestoreClipboard({}), false);
   assert.equal(canSafelyRestoreClipboard({ text: "reference", file: "/tmp/reference.png" }), false);
   assert.equal(
