@@ -101,6 +101,23 @@ test("maps canonically equivalent accented words safely in either order", () => 
   });
 });
 
+test("preserves structural invariants across adversarial Unicode input", () => {
+  const fixtures = [
+    "ǅuro e\u0301lan ÉLAN\n٢٠٢٦ · 𝟚𝟘𝟚𝟞",
+    "Iİıi — naïve\n東京\t२०२६",
+    "A\u0301 Á É é e\u0301 · Ⅷ ½ ²",
+  ];
+
+  for (let seed = 1; seed <= 40; seed++) {
+    fixtures.forEach((source, fixtureIndex) => {
+      const result = scrambleText(source, { random: seededRandom(seed * 10 + fixtureIndex) });
+
+      assert.equal(structure(result), structure(source));
+      assert.deepEqual(separators(result), separators(source));
+    });
+  }
+});
+
 test("scrambles every numeral without changing numeric structure", () => {
   const source = "2026 / 03 / 14";
   const result = scrambleText(source, { random: seededRandom(4) });
