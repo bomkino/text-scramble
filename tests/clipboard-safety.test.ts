@@ -6,11 +6,11 @@ test("accepts clipboard content Raycast can restore", () => {
   assert.equal(canSafelyRestoreClipboard({ text: "reference" }), true);
   assert.equal(canSafelyRestoreClipboard({ text: "" }), true);
   assert.equal(canSafelyRestoreClipboard({ text: "reference", html: "<p>reference</p>" }), true);
-  assert.equal(canSafelyRestoreClipboard({ text: "reference", file: "/tmp/reference.png" }), true);
 });
 
 test("rejects unsupported clipboard representations", () => {
   assert.equal(canSafelyRestoreClipboard({}), false);
+  assert.equal(canSafelyRestoreClipboard({ text: "reference", file: "/tmp/reference.png" }), false);
   assert.equal(
     canSafelyRestoreClipboard({ text: "reference", file: "/tmp/reference.png", html: "<p>reference</p>" }),
     false,
