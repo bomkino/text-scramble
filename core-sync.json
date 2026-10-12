@@ -1,13 +1,13 @@
 {
   "note": "Written by `npm run sync-core`. Do not edit the vendored files; change them in the source repository.",
   "repository": "bomkino/text-scramble-design-plugins",
-  "ref": "main",
-  "commit": "0db956432b204c5f687e7bc7363c2dce1d2707bd",
+  "ref": "31d5df1c3f3d91f261d3ba81a1087dea94c29fc7",
+  "commit": "31d5df1c3f3d91f261d3ba81a1087dea94c29fc7",
   "files": [
     {
       "source": "packages/core/src/scramble-text.ts",
       "path": "src/core/scramble-text.ts",
-      "sha256": "f3e6e32857cf8dfc3cec96ca7f7182be398c83d02c6be506b053be40dec3f291"
+      "sha256": "826dde9e3f31c21c3e4dbccd47f6983cc3b755acf7fe4bfa475dae804f32f542"
     },
     {
       "source": "packages/core/src/word-lists.ts",
@@ -17,7 +17,17 @@
     {
       "source": "packages/core/test-vectors.json",
       "path": "tests/core-test-vectors.json",
-      "sha256": "db42804e045f133d0dc41aef98f2d19fb5c173247311df28062b246465c3492b"
+      "sha256": "8350634649dbe39b1d95afae135501ed024d922d206e67ecabec478ad2e59b2e"
+    },
+    {
+      "source": "packages/core/src/web-addresses.ts",
+      "path": "src/core/web-addresses.ts",
+      "sha256": "95211142eaec2cbcf6f7f5ec62c1602bd46315715a914f8641ce20133176e7d5"
+    },
+    {
+      "source": "packages/core/src/top-level-domains.ts",
+      "path": "src/core/top-level-domains.ts",
+      "sha256": "b8ce9d8ac62d1eaa15b7d9e33f9dc46798610ef4bd11b32afc665dabb4601320"
     }
   ]
 }
