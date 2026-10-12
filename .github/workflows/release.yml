@@ -1,0 +1,114 @@
+name: Release
+
+# Run by hand from the Actions tab: Release › Run workflow.
+# A dry run checks, packages and lists the files, and publishes nothing.
+# Untick "Dry run" on main to tag the version and publish the GitHub release.
+# Release notes come from the top entry of CHANGELOG.md, the same text the Raycast Store shows.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, like 1.1.0"
+        required: true
+        type: string
+      dry_run:
+        description: "Dry run: check and package only, publish nothing"
+        type: boolean
+        default: true
+  pull_request:
+    paths:
+      - .github/workflows/release.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    env:
+      PUBLISH: ${{ github.event_name == 'workflow_dispatch' && !inputs.dry_run }}
+      VERSION: ${{ inputs.version || '0.0.0' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22.22.2
+          cache: npm
+
+      - name: Check the version
+        run: |
+          if ! printf '%s' "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Version must look like 1.1.0, not \"$VERSION\"."
+            exit 1
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" > /dev/null; then
+            if [ "$PUBLISH" = "true" ]; then
+              echo "::error::v$VERSION is already released. Pick a new version."
+              exit 1
+            fi
+            echo "::warning::v$VERSION is already released."
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit production threshold
+        run: npm audit --audit-level=moderate
+
+      - name: Package the source and write the release notes
+        run: |
+          mkdir -p artifacts
+          git archive --format=zip --prefix="Text Scramble - Raycast/" -o "artifacts/Text-Scramble-Raycast-$VERSION.zip" HEAD
+          (cd artifacts && shasum -a 256 "Text-Scramble-Raycast-$VERSION.zip" > SHA256SUMS.txt)
+          awk '/^## / { if (found) exit; found = 1; next } found' CHANGELOG.md > "$RUNNER_TEMP/release-notes.md"
+          if ! grep -q '[^[:space:]]' "$RUNNER_TEMP/release-notes.md"; then
+            echo "::error::CHANGELOG.md has no top entry to use as release notes."
+            exit 1
+          fi
+
+      - name: Publish the GitHub release
+        if: env.PUBLISH == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Publish from main only."
+            exit 1
+          fi
+          gh release create "v$VERSION" \
+            "artifacts/Text-Scramble-Raycast-$VERSION.zip" \
+            artifacts/SHA256SUMS.txt \
+            --target "$GITHUB_SHA" \
+            --title "Text Scramble v$VERSION" \
+            --notes-file "$RUNNER_TEMP/release-notes.md"
+
+      - name: Summary
+        run: |
+          {
+            echo "## Text Scramble v$VERSION"
+            if [ "$PUBLISH" = "true" ]; then echo "Published as a GitHub release."; else echo "Dry run: nothing was published."; fi
+            echo
+            echo '```text'
+            cat artifacts/SHA256SUMS.txt
+            echo '```'
+            echo
+            echo "### Release notes"
+            cat "$RUNNER_TEMP/release-notes.md"
+          } >> "$GITHUB_STEP_SUMMARY"

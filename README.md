@@ -73,7 +73,7 @@ The extension is being prepared for the Raycast Store. Until it is accepted, the
 ## Project
 
 - [Design and algorithm notes](docs/DESIGN.md)
-- [Store submission checklist](docs/STORE_SUBMISSION.md)
+- [Publishing](docs/PUBLISHING.md)
 - [Contributing](CONTRIBUTING.md)
 - [Credits](ACKNOWLEDGEMENTS.md)
 - [Security](SECURITY.md)
