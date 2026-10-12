@@ -1,6 +1,7 @@
 import { Clipboard, getPreferenceValues, getSelectedText, showHUD } from "@raycast/api";
 import { getRestorableClipboardContent, restoreClipboardWithRetry } from "./clipboard-safety";
-import { scrambleText } from "./scramble-text";
+import { scrambleText } from "./core/scramble-text";
+import { getScrambleOptions } from "./scramble-options";
 
 class NoTextError extends Error {
   constructor() {
@@ -100,7 +101,7 @@ export default async function Command(): Promise<void> {
 
   try {
     const source = await readText(preferences.source);
-    const scrambled = scrambleText(source, { scrambleNumbers: preferences.scrambleNumbers });
+    const scrambled = scrambleText(source, getScrambleOptions(preferences));
 
     if (scrambled === source) {
       await showHUD("Nothing to scramble");
