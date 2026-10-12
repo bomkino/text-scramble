@@ -81,11 +81,13 @@
   ],
   "scripts": {
     "build": "ray build",
+    "check-core": "node scripts/sync-core.mjs check",
     "dev": "ray develop",
     "fix-lint": "ray lint --fix",
     "lint": "ray lint",
     "prepublishOnly": "node -e \"console.error('Use npm run publish to submit this extension to Raycast.'); process.exit(1)\"",
     "publish": "npx @raycast/api@latest publish",
+    "sync-core": "node scripts/sync-core.mjs sync",
     "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {

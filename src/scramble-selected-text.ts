@@ -1,6 +1,6 @@
 import { Clipboard, getPreferenceValues, getSelectedText, showHUD } from "@raycast/api";
 import { getRestorableClipboardContent, restoreClipboardWithRetry } from "./clipboard-safety";
-import { scrambleText } from "./scramble-text";
+import { scrambleText } from "./core/scramble-text";
 
 class NoTextError extends Error {
   constructor() {

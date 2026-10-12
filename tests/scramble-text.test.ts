@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { estimateVisualWidth, scrambleText } from "../src/scramble-text";
+import { estimateVisualWidth, scrambleText } from "../src/core/scramble-text";
 
 function seededRandom(seed: number): () => number {
   let state = seed >>> 0;

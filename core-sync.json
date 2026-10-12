@@ -1,0 +1,23 @@
+{
+  "note": "Written by `npm run sync-core`. Do not edit the vendored files; change them in the source repository.",
+  "repository": "bomkino/text-scramble-design-plugins",
+  "ref": "main",
+  "commit": "0db956432b204c5f687e7bc7363c2dce1d2707bd",
+  "files": [
+    {
+      "source": "packages/core/src/scramble-text.ts",
+      "path": "src/core/scramble-text.ts",
+      "sha256": "f3e6e32857cf8dfc3cec96ca7f7182be398c83d02c6be506b053be40dec3f291"
+    },
+    {
+      "source": "packages/core/src/word-lists.ts",
+      "path": "src/core/word-lists.ts",
+      "sha256": "a8f9d4d531f9bafed009abd9ff71ccdf14550523a237c032474063ffe911b444"
+    },
+    {
+      "source": "packages/core/test-vectors.json",
+      "path": "tests/core-test-vectors.json",
+      "sha256": "db42804e045f133d0dc41aef98f2d19fb5c173247311df28062b246465c3492b"
+    }
+  ]
+}
