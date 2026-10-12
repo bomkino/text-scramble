@@ -24,6 +24,7 @@ There are two separate things to publish:
    npm test
    npm run lint
    npm run build
+   npm run check-core
    ```
 
 3. On your Mac, run `npm run publish`. It asks you to sign in to GitHub in your browser, then opens a pull request in [raycast/extensions](https://github.com/raycast/extensions).
