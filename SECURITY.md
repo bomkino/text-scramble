@@ -2,8 +2,10 @@
 
 ## Privacy boundary
 
-Text Scramble processes text in memory on the local Mac. It does not send, retain, or log selected text. Unexpected command errors are logged without including the source or scrambled content.
+Text Scramble works on your text in memory, on your Mac. It doesn't send, keep, or log the text you scramble. If a command fails unexpectedly, the error is logged without the original or scrambled text.
 
 ## Reporting a vulnerability
 
-Please use GitHub's **Security → Report a vulnerability** flow instead of a public issue. Include the affected version, impact, and the smallest safe reproduction you can provide. Do not include confidential deck copy.
+Please report it privately, not in a public issue. On GitHub, open the repository's **Security › Report a vulnerability** page. Or email **hello@pitch.dog**.
+
+Include the version, what could go wrong, and the smallest steps that show it. Don't include client copy or confidential documents. A small invented example is enough.
