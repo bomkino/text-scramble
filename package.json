@@ -77,6 +77,15 @@
       "label": "Scramble Numbers",
       "default": true,
       "required": false
+    },
+    {
+      "name": "seed",
+      "type": "textfield",
+      "title": "Seed",
+      "description": "Optional. The same seed always gives the same result. Leave empty for fresh words each run.",
+      "placeholder": "Any word or number",
+      "default": "",
+      "required": false
     }
   ],
   "scripts": {
