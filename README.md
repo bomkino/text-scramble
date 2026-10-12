@@ -2,81 +2,63 @@
 
 **A humane alternative to Lorem Ipsum for decks, design drafts, and work in progress.**
 
-Text Scramble turns selected copy into elegant invented language while protecting its visual footprint. It preserves spaces, punctuation, paragraph breaks, manual line breaks, word lengths, and casing, then chooses pronounceable replacements with a similar estimated width.
-
-[![CI](https://github.com/bomkino/text-scramble/actions/workflows/ci.yml/badge.svg)](https://github.com/bomkino/text-scramble/actions/workflows/ci.yml)
-[![MIT License](https://img.shields.io/badge/license-MIT-111111.svg)](LICENSE)
+Text Scramble swaps the words you select for invented words that keep the same shape. Spaces, punctuation, paragraph breaks, line breaks, word lengths, and capitals stay where they were, and each invented word is picked to be about as wide as the word it replaces.
 
 ## Use
 
-1. In Figma, InDesign, Keynote, or another app, enter text-editing mode and select the actual characters.
+1. In Figma, InDesign, Keynote, or another app, start editing the text and select the characters you want to scramble.
 2. Open Raycast and run **Scramble Selected Text**.
 3. The selection is replaced with scrambled plain text.
 
-For a one-keystroke workflow, assign the command a hotkey in **Raycast Settings → Extensions → Text Scramble**.
+To do it in one keystroke, give the command a hotkey in **Raycast Settings › Extensions › Text Scramble**.
 
-## What it protects
+If Raycast can't read your selection or paste into it, allow Raycast under **System Settings › Privacy & Security › Accessibility**.
 
-- Exact whitespace, punctuation, paragraphs, and manual line breaks
-- Exact letter and decimal-digit counts at every position
-- Original numeral writing system, including fullwidth, Arabic-Indic, and Devanagari digits
-- Exact uppercase and lowercase pattern
-- Similar estimated word and line measure
-- Consistent replacements for repeated words within one selection
-- Soft, readable rhythm without obvious English words or jarring fragments
+## What stays the same
 
-Automatic wrapping remains an approximation. Font metrics, tracking, kerning, OpenType features, and application shaping can all move a line slightly.
+- Spaces, tabs, punctuation, paragraphs, and line breaks
+- The length of every word and number
+- Capital letters, in the same places
+- The kind of digits, such as fullwidth, Arabic-Indic, or Devanagari
+- Accents, wherever the invented letter has a common accented form, such as á or ñ
+- Roughly the same width for each word and line
+- Repeated words: a word used twice in one selection gets the same invented word both times
+
+## What changes
+
+- Every word becomes an invented, pronounceable word of the same length. Invented words avoid common English words and unwelcome fragments.
+- Words in other alphabets, such as Greek or Cyrillic, become invented words in Latin letters.
+- Every digit becomes a different digit, unless you turn off **Scramble Numbers**.
+- Emails and web addresses keep their total length, though the parts inside can shift a little. `https://`, `mailto:`, and `www.` stay. The ending always becomes a reserved one, such as `.test` or `.example`, that no real website or mailbox can use.
+
+Lines that wrap on their own can still move a little, because fonts, letter spacing, and kerning differ.
 
 ## Preferences
 
-| Preference       | Default           | Options                                                    |
-| ---------------- | ----------------- | ---------------------------------------------------------- |
-| Preferred Source | Selected Text     | Selected Text or Clipboard; fallback only when it is empty |
-| Output Action    | Replace Selection | Replace Selection or Copy to Clipboard                     |
-| Scramble Numbers | On                | Replace decimal digits in place or leave numbers untouched |
+| Preference       | Default           | What it does                                                                         |
+| ---------------- | ----------------- | ------------------------------------------------------------------------------------ |
+| Preferred Source | Selected Text     | Where to read the text from: Selected Text or Clipboard                              |
+| Output Action    | Replace Selection | Replace Selection, or Copy to Clipboard to copy the result as plain text instead     |
+| Scramble Numbers | On                | On changes every digit. Off leaves numbers as they are                               |
+| Seed             | Empty             | Optional. With the same seed, the same text always gives the same result (see below) |
 
-**Replace Selection** restores supported text, HTML, and file clipboard contents after pasting. If Raycast cannot safely restore an existing rich clipboard item, Text Scramble stops before changing either the selection or clipboard.
+**Preferred Source:** Text Scramble reads this source first. It only tries the other one when this one is empty. If it can't read this source at all, it stops and tells you, instead of using the other one.
+
+**Replace Selection** pastes the scrambled text, then puts your clipboard back. It can put back plain text and HTML (the formatted text you get when you copy from a web page). Other kinds of content copied along with them may not come back. If the clipboard holds a copied file, or nothing Raycast can read as text, Text Scramble stops before changing your selection or your clipboard, and asks you to save what's on the clipboard first. If macOS won't let it put the clipboard back after a few tries, your text is still replaced, and Text Scramble tells you to get your earlier clipboard back from Raycast's Clipboard History.
+
+**Seed:** a seed is any word or number you choose. With the same seed, the same text always turns into the same scrambled text, so you can scramble a slide again and get the same words. Leave it empty to get new words every time.
 
 ## Privacy
 
-Everything runs locally. The extension makes no network request, AI call, analytics event, or text-storage operation.
+Everything runs on your Mac. Text Scramble sends nothing anywhere and keeps no copy of your text.
+It disguises drafts; it isn't redaction. Word lengths, punctuation, and repeated words stay visible, so go through the [privacy checklist](https://github.com/bomkino/text-scramble/blob/main/PRIVACY.md) before you share a scrambled file.
 
-Structural anonymity has a deliberate tradeoff: word lengths, punctuation, repetition, and line structure remain visible because preserving them protects the layout. Text Scramble is draft anonymization, not cryptographic redaction.
+## Credits
 
-## Install locally
+Text Scramble’s selected-text and clipboard fallback, plus its paste-or-copy interaction model, was inspired by Eric (`erics118`) and the contributors to Raycast’s open-source [Change Case](https://www.raycast.com/erics118/change-case) extension.
 
-Raycast and Node.js 22.22.2 or newer are required.
+No Change Case source code is bundled or copied. The MIT-licensed interaction pattern was studied and then implemented for Text Scramble’s distinct purpose.
 
-```bash
-git clone https://github.com/bomkino/text-scramble.git
-cd text-scramble
-npm ci
-npm run dev
-```
+Built on the [Raycast API](https://developers.raycast.com/) and its open extension ecosystem. Designed and maintained by [pitch.dog](https://pitch.dog/), with development support from OpenAI Codex.
 
-Raycast imports the development extension. After the first import, the command remains available locally. If selection or paste access is blocked, allow Raycast under **System Settings → Privacy & Security → Accessibility**.
-
-If you already have this repository checked out, run `npm ci` and `npm run dev` from its folder to load the latest version.
-
-## Verify
-
-```bash
-npm test
-npm run lint
-npm run build
-```
-
-For a live paste check, open [tests/manual-smoke-test-source.txt](tests/manual-smoke-test-source.txt), select all, then run **Scramble Selected Text**. The three lines should retain their structure while the words and numerals change.
-
-The extension is being prepared for the Raycast Store. Until it is accepted, the local installation above is the supported route.
-
-## Project
-
-- [Design and algorithm notes](docs/DESIGN.md)
-- [Publishing](docs/PUBLISHING.md)
-- [Contributing](CONTRIBUTING.md)
-- [Credits](ACKNOWLEDGEMENTS.md)
-- [Security](SECURITY.md)
-- [Changelog](CHANGELOG.md)
-
-Released under the [MIT License](LICENSE).
+Source code, the contributor guide, and the MIT License are on [GitHub](https://github.com/bomkino/text-scramble).

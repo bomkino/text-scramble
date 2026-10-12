@@ -1,6 +1,13 @@
 # Changelog
 
-## [Initial Release] - {PR_MERGE_DATE}
+## [Seed option and safer placeholder text] - {PR_MERGE_DATE}
+
+- Added a **Seed** preference. With the same seed, the same text always scrambles to the same result. Leave it empty for new words every time.
+- Emails and web addresses now always end in a reserved ending, such as `.test`, `.example`, or `.alt`, so a scrambled address can't lead to a real website or mailbox. Each address keeps its length, and `https://`, `mailto:`, and `www.` stay as they are.
+- Accented words now keep exactly the same number of characters, and use common accented letters that most fonts include, such as á or ñ.
+- Now uses the same scrambling engine as Text Scramble for Figma and InDesign. Its shared list of real words to keep out of the invented text has about 200 more words.
+
+## [Initial Release] - 2026-08-13
 
 - Added shape-matched, pronounceable invented-word scrambling.
 - Preserved whitespace, punctuation, token length, casing, and line breaks.
